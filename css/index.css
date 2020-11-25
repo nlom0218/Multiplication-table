@@ -1,0 +1,12 @@
+@import "./main.css";
+@import "./setting.css";
+
+.hiding {
+  display: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
