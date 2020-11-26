@@ -8,10 +8,44 @@ const $score = document.querySelector("#js-score");
 const $resetBtn = document.querySelector("#js-resetBtn");
 const $timerRange = document.querySelector("#js-timerRange");
 const $settedTime = document.querySelector("#js-settedTime");
+const $setting = document.querySelector("#js-setting");
 const $timerSetting = document.querySelector("#js-timerSetting");
 const $timerSettingArea = document.querySelector("#js-timerSettingArea");
+const $difficultyForm = document.querySelector("#js-difficultyForom");
+const $difficultyList = document.querySelector("#js-difficultyList");
+const $difficultyTitle = document.querySelector(".difficultySetting_title");
+const $difficultySettingArea = document.querySelector(
+  "#js-difficultySettingArea"
+);
 
-// setting
+let num1;
+let num2 = Math.ceil(Math.random() * 8) + 1;
+let curDifficulty = "all";
+
+// difficulty setting
+difficultySetting = (curDifficulty) => {
+  if (curDifficulty === "all") {
+    num1 = Math.ceil(Math.random() * 8) + 1;
+  } else {
+    num1 = Number(curDifficulty);
+  }
+};
+
+handleClickDifficultyList = (e) => {
+  curDifficulty = e.target.value;
+  difficultySetting(curDifficulty);
+};
+
+handleClickDifTitle = () => {
+  if ($difficultySettingArea.classList.contains("hiding")) {
+    $difficultySettingArea.classList.remove("hiding");
+  } else {
+    $difficultySettingArea.classList.add("hiding");
+  }
+};
+//
+
+// timer setting
 let settedTime = 60;
 
 showAndHideTimerSet = () => {
@@ -43,9 +77,6 @@ handleMousemoveTimerRange = () => {
 //
 
 // 구구단 기본 설정
-let num1 = Math.ceil(Math.random() * 10);
-let num2 = Math.ceil(Math.random() * 10);
-
 let correctAnswerNum = [];
 
 paintQuestion = () => {
@@ -60,6 +91,7 @@ paintSocre = () => {
   $score.classList.remove("hiding");
   $resetBtn.classList.remove("hiding");
   $score.innerText = `${correctAnswerNum.length}개 맞췄습니다!`;
+  correctAnswerNum = [];
 };
 
 handleSubmitAnswer = (e) => {
@@ -69,8 +101,8 @@ handleSubmitAnswer = (e) => {
   if (Number(answer) === num1 * num2) {
     $result.innerText = "정답입니다!";
     correctAnswerNum.push(answer);
-    num1 = Math.ceil(Math.random() * 10);
-    num2 = Math.ceil(Math.random() * 10);
+    difficultySetting(curDifficulty);
+    num2 = Math.ceil(Math.random() * 8) + 1;
     paintQuestion();
   } else {
     $result.innerText = "다시 풀어보세요!";
@@ -78,6 +110,7 @@ handleSubmitAnswer = (e) => {
 };
 
 startGame = () => {
+  difficultySetting(curDifficulty);
   paintQuestion();
   let time = settedTime - 1;
   const timer = setInterval(() => {
@@ -85,8 +118,9 @@ startGame = () => {
     if (time-- === 0) {
       clearInterval(timer);
       paintSocre();
-      $timerSetting.classList.remove("hiding");
+      $setting.classList.remove("hiding");
       $timerSettingArea.classList.add("hiding");
+      $difficultySettingArea.classList.add("hiding");
     }
   }, 1000);
 };
@@ -110,7 +144,7 @@ intro = () => {
 };
 
 handleClickStartBtn = () => {
-  $timerSetting.classList.add("hiding");
+  $setting.classList.add("hiding");
   intro();
 };
 
@@ -118,7 +152,7 @@ handleClickResetBtn = () => {
   $question.innerText = "5";
   $result.innerText = "";
   $inputAnswer.value = "";
-  $timerSetting.classList.add("hiding");
+  $setting.classList.add("hiding");
   intro();
 };
 
@@ -128,5 +162,7 @@ function init() {
   $resetBtn.addEventListener("click", handleClickResetBtn);
   $timerRange.addEventListener("mousemove", handleMousemoveTimerRange);
   $timerSetting.addEventListener("click", handleClickTimerSetting);
+  $difficultyList.addEventListener("click", handleClickDifficultyList);
+  $difficultyTitle.addEventListener("click", handleClickDifTitle);
 }
 init();
