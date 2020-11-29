@@ -17,6 +17,8 @@ const $difficultyTitle = document.querySelector(".difficultySetting_title");
 const $difficultySettingArea = document.querySelector(
   "#js-difficultySettingArea"
 );
+const $resultStar = document.querySelector("#js-resultStar");
+const $resultComment = document.querySelector("#js-resultComment");
 
 let num1;
 let num2 = Math.ceil(Math.random() * 8) + 1;
@@ -76,6 +78,29 @@ handleMousemoveTimerRange = () => {
 };
 //
 
+// settedTime을 활용하여 결과표 만들기
+paintResultTable = () => {
+  const answerNum = correctAnswerNum.length;
+  if (answerNum > (Number(settedTime) / 5) * 4) {
+    $resultStar.innerText = `⭐⭐⭐⭐⭐`;
+    $resultComment.innerText = `당신은 구구단의 고수가 틀림없어요`;
+  } else if (answerNum >= (Number(settedTime) / 5) * 3) {
+    $resultStar.innerText = `⭐⭐⭐⭐`;
+    $resultComment.innerText = `당당하게 "나 구구단 잘해!"라고 할 수 있는 실력이에요`;
+  } else if (answerNum >= (Number(settedTime) / 5) * 2) {
+    $resultStar.innerText = `⭐⭐⭐`;
+    $resultComment.innerText = `당신은 평벙한 수준의 구구단 실력을 가지고 있네요`;
+  } else if (answerNum >= (Number(settedTime) / 5) * 1) {
+    $resultStar.innerText = `⭐⭐`;
+    $resultComment.innerText = `조금만 더 구구단의 실력을 키울 필요가 있어요`;
+  } else {
+    $resultStar.innerText = `⭐`;
+    $resultComment.innerText = `구구단을 잘하기 위해 많은 노력이 필요해요`;
+  }
+};
+
+//
+
 // 구구단 기본 설정
 let correctAnswerNum = [];
 
@@ -117,6 +142,7 @@ startGame = () => {
     $timer.innerText = `남은시간: ${time}초`;
     if (time-- === 0) {
       clearInterval(timer);
+      paintResultTable();
       paintSocre();
       $setting.classList.remove("hiding");
       $timerSettingArea.classList.add("hiding");
@@ -153,6 +179,7 @@ handleClickResetBtn = () => {
   $result.innerText = "";
   $inputAnswer.value = "";
   $setting.classList.add("hiding");
+  $timer.innerText = `남은시간: ${$timerRange.value}초`;
   intro();
 };
 
@@ -160,7 +187,7 @@ function init() {
   $startBtn.addEventListener("click", handleClickStartBtn);
   $answer.addEventListener("submit", handleSubmitAnswer);
   $resetBtn.addEventListener("click", handleClickResetBtn);
-  $timerRange.addEventListener("mousemove", handleMousemoveTimerRange);
+  $timerRange.addEventListener("mouseup", handleMousemoveTimerRange);
   $timerSetting.addEventListener("click", handleClickTimerSetting);
   $difficultyList.addEventListener("click", handleClickDifficultyList);
   $difficultyTitle.addEventListener("click", handleClickDifTitle);

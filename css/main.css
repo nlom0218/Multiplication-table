@@ -60,3 +60,20 @@ header {
   font-size: 30px;
   font-weight: 700;
 }
+
+.resultTable {
+  margin: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-star {
+  font-size: 40px;
+}
+
+.result-comment {
+  margin-top: 40px;
+  font-size: 30px;
+  font-weight: 700;
+}
