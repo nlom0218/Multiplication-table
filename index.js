@@ -17,6 +17,7 @@ const $difficultyTitle = document.querySelector(".difficultySetting_title");
 const $difficultySettingArea = document.querySelector(
   "#js-difficultySettingArea"
 );
+const $resultTable = document.querySelector("#js-resultTable");
 const $resultStar = document.querySelector("#js-resultStar");
 const $resultComment = document.querySelector("#js-resultComment");
 
@@ -80,17 +81,18 @@ handleMousemoveTimerRange = () => {
 
 // settedTime을 활용하여 결과표 만들기
 paintResultTable = () => {
+  $resultTable.classList.remove("hiding");
   const answerNum = correctAnswerNum.length;
   if (answerNum > (Number(settedTime) / 5) * 4) {
     $resultStar.innerText = `⭐⭐⭐⭐⭐`;
     $resultComment.innerText = `당신은 구구단의 고수가 틀림없어요`;
-  } else if (answerNum >= (Number(settedTime) / 5) * 3) {
+  } else if (answerNum > (Number(settedTime) / 5) * 3) {
     $resultStar.innerText = `⭐⭐⭐⭐`;
     $resultComment.innerText = `당당하게 "나 구구단 잘해!"라고 할 수 있는 실력이에요`;
-  } else if (answerNum >= (Number(settedTime) / 5) * 2) {
+  } else if (answerNum > (Number(settedTime) / 5) * 2) {
     $resultStar.innerText = `⭐⭐⭐`;
     $resultComment.innerText = `당신은 평벙한 수준의 구구단 실력을 가지고 있네요`;
-  } else if (answerNum >= (Number(settedTime) / 5) * 1) {
+  } else if (answerNum > (Number(settedTime) / 5) * 1) {
     $resultStar.innerText = `⭐⭐`;
     $resultComment.innerText = `조금만 더 구구단의 실력을 키울 필요가 있어요`;
   } else {
@@ -179,6 +181,7 @@ handleClickResetBtn = () => {
   $result.innerText = "";
   $inputAnswer.value = "";
   $setting.classList.add("hiding");
+  $resultTable.classList.add("hiding");
   $timer.innerText = `남은시간: ${$timerRange.value}초`;
   intro();
 };
